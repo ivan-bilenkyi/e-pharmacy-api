@@ -3,15 +3,19 @@ const morgan = require("morgan");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const usersRouter = require("./route/user");
 
 dotenv.config();
 
+const { DB_HOST, PORT } = process.env;
 const app = express();
 
 app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
+
+app.use("/api/user", usersRouter);
 
 
 app.use((_, res) => {
@@ -23,7 +27,6 @@ app.use((err, req, res, next) => {
     res.status(status).json({ message });
 });
 
-const { DB_HOST, PORT } = process.env;
 mongoose
     .connect(DB_HOST)
     .then(() => {
