@@ -1,9 +1,10 @@
-const express = require("express");
-const morgan = require("morgan");
-const cors = require("cors");
-const dotenv = require("dotenv");
-const mongoose = require("mongoose");
-const usersRouter = require("./route/user");
+import express from "express";
+import morgan from "morgan";
+import cors from "cors";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+import usersRouter from "./route/user.js";
+import storesRouter from './route/store.js'
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.use("/api/user", usersRouter);
+app.use("/api/stores", storesRouter);
 
 
 app.use((_, res) => {

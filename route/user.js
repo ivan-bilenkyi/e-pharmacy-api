@@ -1,10 +1,15 @@
-const express = require('express');
-const validateBody = require('../middlewares/validateBody');
-const { schemas } = require('../models/user')
-const { register } = require("../controlers/auth");
+import express from 'express';
+import { validateBody } from '../middlewares/validateBody.js';
+import {login, logout, refreshUser, register} from '../controlers/auth.js';
+import {controllerWrapper} from "../helpers/controllerWrapper.js";
+import {authenticate} from "../middlewares/authenticate.js";
+import {loginSchema, registerSchema} from "../models/user.js";
 
-const usersRouter = express.Router();
+const router = express.Router();
 
-usersRouter.post("/register", validateBody(schemas.registerSchema), register);
+router.post("/register", validateBody(registerSchema), controllerWrapper(register));
+router.post("/login", validateBody(loginSchema), controllerWrapper(login))
+router.get("/refresh", authenticate , controllerWrapper(refreshUser))
+router.post("/logout", authenticate, logout);
 
-module.exports = usersRouter;
+export default router;

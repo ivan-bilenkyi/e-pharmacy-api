@@ -1,10 +1,10 @@
-const { v4 } = require("uuid");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { HttpError, controllerWrapper } = require("../helpers");
-const { User } = require("../models/user");
+import { v4 } from 'uuid'
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
+import { HttpError } from '../helpers/HttpError.js'
+import {User} from "../db/user.js";
 
-const register = async (req, res) => {
+export const register = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
 
@@ -29,14 +29,55 @@ const register = async (req, res) => {
 
     res.status(201).json({
         token,
-        // user: {
-        //     email: newUser.email,
-        //     name: newUser.name,
-        //     phone: newUser.phone,
-        // },
+        user: {
+            name: newUser.name,
+            email: newUser.email,
+        }
     });
 };
 
-module.exports = {
-    register: controllerWrapper(register),
-};
+export const login = async (req, res, next) => {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+        throw HttpError(401, "Email is wrong")
+    }
+
+    const isValidPassword = await bcrypt.compare(password, user.password);
+
+    if (!isValidPassword) {
+        throw HttpError(401, "Password is wrong")
+    }
+
+    const payload = {
+        id: user._id,
+    };
+
+    const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "23h" });
+    await User.findByIdAndUpdate(user._id, { token });
+
+    res.json({
+        token,
+        user: {
+            name: user.name,
+            email: user.email,
+        }
+    })
+}
+
+export const refreshUser = async (req, res) => {
+    const { _id, name, email } = req.user;
+
+    res.json({
+        _id,
+        name,
+        email
+    })
+}
+
+export const logout = async (req, res) => {
+    const { _id } = req.user;
+    await User.findByIdAndUpdate(_id, { token: "" });
+
+    res.status(200).json({ message: "Logout success" });
+}

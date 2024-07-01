@@ -1,7 +1,0 @@
-const HttpError = require('./HttpError')
-const controllerWrapper = require('./controllerWrapper')
-
-module.exports = {
-    HttpError: HttpError,
-    controllerWrapper: controllerWrapper,
-}
