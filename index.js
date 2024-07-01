@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import usersRouter from "./route/user.js";
 import storesRouter from './route/store.js'
+import reviewsRouter from './route/review.js'
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(express.static("public"));
 
 app.use("/api/user", usersRouter);
 app.use("/api/stores", storesRouter);
+app.use("/api/customer-reviews", reviewsRouter);
 
 
 app.use((_, res) => {
