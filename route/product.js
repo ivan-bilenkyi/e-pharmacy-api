@@ -5,6 +5,6 @@ import {controllerWrapper} from "../helpers/controllerWrapper.js";
 
 const router = express.Router();
 
-router.get("/", authenticate, controllerWrapper(getProducts));
+router.get("/", controllerWrapper(getProducts));
 
 export default router;

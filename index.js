@@ -7,6 +7,7 @@ import usersRouter from "./route/user.js";
 import storesRouter from './route/store.js'
 import reviewsRouter from './route/review.js'
 import productsRouter from "./route/product.js";
+import cartRouter from "./route/cart.js"
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use("/api/user", usersRouter);
 app.use("/api/stores", storesRouter);
 app.use("/api/customer-reviews", reviewsRouter);
 app.use("/api/products", productsRouter);
+app.use("/api/cart", cartRouter);
 
 
 app.use((_, res) => {
