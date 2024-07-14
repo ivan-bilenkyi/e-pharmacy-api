@@ -47,5 +47,3 @@ mongoose
         console.log(e.message);
         process.exit(1);
     });
-
-export default app
