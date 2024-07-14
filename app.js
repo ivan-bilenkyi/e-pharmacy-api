@@ -14,6 +14,10 @@ dotenv.config();
 const { DB_HOST, PORT } = process.env;
 const app = express();
 
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+});
+
 app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
@@ -47,3 +51,5 @@ mongoose
         console.log(e.message);
         process.exit(1);
     });
+
+export default app
