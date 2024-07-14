@@ -5,7 +5,7 @@ import {authenticate} from "../middlewares/authenticate.js";
 
 const router = express.Router();
 
-router.get("/", authenticate, controllerWrapper(getAllStores))
+router.get("/", controllerWrapper(getAllStores))
 router.get("/nearest", controllerWrapper(getRandomStores));
 
 export default router;

@@ -1,11 +1,15 @@
 import Joi from "joi";
 
+const productSchema = Joi.object({
+    name: Joi.string().required(),
+    quantity: Joi.number().integer().min(1).required()
+});
+
 export const orderSchema = Joi.object({
     name: Joi.string().required(),
+    email: Joi.string().email().required(),
     phone: Joi.string().required(),
     address: Joi.string().required(),
-    email: Joi.string().email().required(),
-    paymentMethod: Joi.string().required(),
-    totalAmount: Joi.number().min(0).required(),
-    products: Joi.array().items(Joi.string().required()).required(),
+    paymentMethod: Joi.string().valid('Cash On Delivery', 'Bank').required(),
+    products: Joi.array().items(productSchema).required()
 });
