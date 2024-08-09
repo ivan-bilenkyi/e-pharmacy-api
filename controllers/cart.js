@@ -38,7 +38,6 @@ export const updateCart = async (req, res, next) => {
 export const addToOrders = async (req, res, next) => {
     const { cart } = req.body;
 
-    // Зберігаємо нове замовлення
     const newOrder = new Order(req.body);
     await newOrder.save();
 
